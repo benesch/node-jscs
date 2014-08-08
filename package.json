@@ -38,12 +38,13 @@
   },
   "devDependencies": {
     "browserify": "~5.9.1",
+    "has-ansi": "~0.1.0",
     "hooker": "~0.2.3",
     "jshint": "~2.5.0",
     "mocha": "~1.21.4",
+    "separated-coverage": "^1.2.0",
     "sinon": "~1.10.0",
-    "xml2js": "~0.4.2",
-    "has-ansi": "~0.1.0"
+    "xml2js": "~0.4.2"
   },
   "bin": {
     "jscs": "./bin/jscs"
@@ -51,6 +52,9 @@
   "scripts": {
     "lint": "jshint . && node bin/jscs lib test bin publish",
     "test": "npm run lint && mocha",
+    "build-coverage": "separated-coverage run-mocha --bin node_modules/.bin/mocha --sources 'lib/**' --tests 'test/**'",
+    "coverage": "npm run build-coverage && separated-coverage report --input coverage.json",
+    "coverage-html": "npm run build-coverage && separated-coverage report --reporter html --input coverage.json > coverage.html && echo 'Saved at coverage.html'",
     "browserify": "browserify --standalone JscsStringChecker lib/string-checker.js -o jscs-browser.js",
     "changelog": "git log `git describe --tags --abbrev=0`..HEAD --pretty=format:' * %s (%an)' | grep -v 'Merge pull request'",
     "release": "node publish/prepublish && npm publish",
